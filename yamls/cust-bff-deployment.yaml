@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: customer-bff
+  namespace: book-store-ns
+  labels:
+    app: customer-bff
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: customer-bff
+  template:
+    metadata:
+      labels:
+        app: customer-bff
+    spec:
+      containers:
+        - name: customer-bff-container
+          image: rutasd/a3_cust_bff:latest
+          ports:
+            - containerPort: 80
+          livenessProbe:
+            httpGet:
+              path: /status
+              port: 80
+            initialDelaySeconds: 15
+            periodSeconds: 10
